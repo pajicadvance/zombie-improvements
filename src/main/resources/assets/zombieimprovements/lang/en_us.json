@@ -1,0 +1,8 @@
+{
+  "zombieimprovements.config": "Mod Configuration",
+  "zombieimprovements.config.leaderRedAura": "Red aura on leaders",
+  "zombieimprovements.config.reinforcementSpawnSounds": "Reinforcement sounds",
+  "zombieimprovements.config.onlyLeaderSpawnsReinforcements": "Only leaders can call reinforcements",
+  "zombieimprovements.config.noLeaderFromSpawners": "Spawners can't spawn leaders",
+  "zombieimprovements.config.noReinforcementsFromSpawners": "Zombies from spawners can't call reinforcements"
+}

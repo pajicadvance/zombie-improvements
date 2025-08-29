@@ -1,24 +1,21 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "zombieimprovements",
   "version": "${version}",
-  "name": "modname",
-  "description": "",
-  "authors": [],
+  "name": "Zombie Improvements",
+  "description": "Improves zombie leader and reinforcement mechanics and fixes a few bugs",
+  "authors": ["pajic"],
   "contact": {},
   "license": "MIT",
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "me.pajic.modid.ClientMain"
-    ],
     "main": [
-      "me.pajic.modid.Main"
+      "me.pajic.zombieimprovements.Main"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "zombieimprovements.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

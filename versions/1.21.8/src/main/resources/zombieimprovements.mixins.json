@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.pajic.zombieimprovements.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ZombieMixin"
+  ],
+  "client": [
+    "AbstractZombieRendererMixin",
+    "LivingEntityRendererMixin",
+    "ZombieRenderStateMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
