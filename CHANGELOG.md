@@ -1,1 +1,1 @@
-- Initial release.
+- Fixed mod file name.
