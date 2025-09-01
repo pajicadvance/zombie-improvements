@@ -1,12 +1,12 @@
 package me.pajic.zombieimprovements.mixin;
 
-import me.pajic.zombieimprovements.util.ZombieRenderStateExtension;
-import net.minecraft.client.renderer.entity.state.ZombieRenderState;
+import me.pajic.zombieimprovements.util.HumanoidRenderStateExtension;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(ZombieRenderState.class)
-public class ZombieRenderStateMixin implements ZombieRenderStateExtension {
+@Mixin(HumanoidRenderState.class)
+public class HumanoidRenderStateMixin implements HumanoidRenderStateExtension {
     @Unique private boolean isLeader = false;
 
     @Override

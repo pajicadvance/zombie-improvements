@@ -1,6 +1,6 @@
 package me.pajic.zombieimprovements.util;
 
-public interface ZombieRenderStateExtension {
+public interface HumanoidRenderStateExtension {
     boolean zi$isLeader();
     void zi$setLeader(boolean bl);
 }

@@ -1,1 +1,1 @@
-- Fixed mod file name.
+- Fixed crash in 1.21.8 when trying to render red aura on some zombie types.

@@ -7,9 +7,9 @@
     "ZombieMixin"
   ],
   "client": [
-    "AbstractZombieRendererMixin",
+    "HumanoidMobRendererMixin",
     "LivingEntityRendererMixin",
-    "ZombieRenderStateMixin"
+    "HumanoidRenderStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

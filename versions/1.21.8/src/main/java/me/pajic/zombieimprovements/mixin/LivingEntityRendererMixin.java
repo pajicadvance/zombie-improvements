@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import me.pajic.zombieimprovements.Main;
+import me.pajic.zombieimprovements.util.HumanoidRenderStateExtension;
 import me.pajic.zombieimprovements.util.ZombieData;
-import me.pajic.zombieimprovements.util.ZombieRenderStateExtension;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -38,7 +38,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
             @Local(argsOnly = true) MultiBufferSource bufferSource,
             @Local(argsOnly = true) int packedLight
     ) {
-        if (Main.CONFIG.leaderRedAura.get() && renderState.entityType.is(EntityTypeTags.ZOMBIES) && ((ZombieRenderStateExtension) renderState).zi$isLeader()) {
+        if (Main.CONFIG.leaderRedAura.get() && renderState.entityType.is(EntityTypeTags.ZOMBIES) && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
             float f = renderState.ageInTicks;
             M entityModel = getModel();
             VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.energySwirl(ZombieData.ZOMBIE_POWER_LAYER, (f * 0.01F) % 1.0F, f * 0.01F % 1.0F));
