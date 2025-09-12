@@ -1,1 +1,1 @@
-- Fixed crash in 1.21.8 when trying to render red aura on some zombie types.
+- Fixed issues with some zombie-like mobs from other mods failing to spawn.

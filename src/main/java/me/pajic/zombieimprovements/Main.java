@@ -2,12 +2,15 @@ package me.pajic.zombieimprovements;
 
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.pajic.zombieimprovements.config.ModConfig;
-import me.pajic.zombieimprovements.util.ZombieData;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//? if < 1.21.8
+import net.minecraft.world.entity.MobSpawnType;
+//? if >= 1.21.8
+/*import net.minecraft.world.entity.EntitySpawnReason;*/
 
 public class Main implements ModInitializer {
     public static final String MOD_ID = "zombieimprovements";
@@ -15,10 +18,13 @@ public class Main implements ModInitializer {
     private static final boolean DEBUG = FabricLoader.getInstance().isDevelopmentEnvironment();
     public static final ResourceLocation CONFIG_RL = withModNamespace("config");
     public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
+    public static ResourceLocation ZOMBIE_POWER_LAYER = withModNamespace("textures/entity/zombie/zombie_leader.png");
 
     @Override
-    public void onInitialize() {
-        ZombieData.init();
+    public void onInitialize() {}
+
+    public static boolean isFromSpawner(/*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/ spawnType) {
+        return /*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/.isSpawner(spawnType);
     }
 
     public static ResourceLocation withModNamespace(String path) {

@@ -4,8 +4,9 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.zombieimprovements.Main;
-import me.pajic.zombieimprovements.util.ZombieData;
 import me.pajic.zombieimprovements.util.ZombieExtension;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -43,6 +44,9 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
         super(entityType, level);
     }
 
+    @Unique private static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(
+            Zombie.class, EntityDataSerializers.BOOLEAN
+    );
     @Unique private int soundTimer = 0;
     @Unique private Zombie soundSource = null;
     @Unique private /*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/ spawnType = null;
@@ -91,7 +95,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     )
     private void markLeader(float difficulty, CallbackInfo ci) {
         heal(getMaxHealth());
-        entityData.set(ZombieData.LEADER, true);
+        entityData.set(LEADER, true);
         Main.debugLog("Leader {} spawned at {} {} {}", getDisplayName().getString(), getX(), getY(), getZ());
     }
 
@@ -111,7 +115,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             )
     )
     private float noLeaderIfFromSpawner(float original) {
-        return Main.CONFIG.noLeaderFromSpawners.get() && ZombieData.isFromSpawner(spawnType) ? 1 : original;
+        return Main.CONFIG.noLeaderFromSpawners.get() && Main.isFromSpawner(spawnType) ? 1 : original;
     }
 
     @WrapWithCondition(
@@ -123,7 +127,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             )
     )
     private boolean noReinforcementsIfFromSpawner(AttributeInstance instance, AttributeModifier modifier) {
-        return !ZombieData.isFromSpawner(spawnType) || !Main.CONFIG.noReinforcementsFromSpawners.get();
+        return !Main.isFromSpawner(spawnType) || !Main.CONFIG.noReinforcementsFromSpawners.get();
     }
 
     @WrapWithCondition(
@@ -134,7 +138,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             )
     )
     private boolean noReinforcementsIfFromSpawner(Zombie instance) {
-        return !ZombieData.isFromSpawner(spawnType) || !Main.CONFIG.noReinforcementsFromSpawners.get();
+        return !Main.isFromSpawner(spawnType) || !Main.CONFIG.noReinforcementsFromSpawners.get();
     }
 
     @ModifyExpressionValue(
@@ -145,7 +149,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             )
     )
     private boolean onlyLeaderSpawnsReinforcements(boolean original) {
-        return Main.CONFIG.onlyLeaderSpawnsReinforcements.get() ? entityData.get(ZombieData.LEADER) : original;
+        return Main.CONFIG.onlyLeaderSpawnsReinforcements.get() ? entityData.get(LEADER) : original;
     }
 
     //? if < 1.21.8 {
@@ -173,7 +177,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             at = @At("TAIL")
     )
     private void defineLeaderData(SynchedEntityData.Builder builder, CallbackInfo ci) {
-        builder.define(ZombieData.LEADER, false);
+        builder.define(LEADER, false);
     }
 
     //? if < 1.21.8 {
@@ -182,7 +186,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             at = @At("TAIL")
     )
     private void saveLeaderData(CompoundTag compound, CallbackInfo ci) {
-        compound.putBoolean("Leader", entityData.get(ZombieData.LEADER));
+        compound.putBoolean("Leader", entityData.get(LEADER));
     }
 
     @Inject(
@@ -190,7 +194,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             at = @At("TAIL")
     )
     private void readLeaderData(CompoundTag compound, CallbackInfo ci) {
-        entityData.set(ZombieData.LEADER, compound.getBoolean("Leader"));
+        entityData.set(LEADER, compound.getBoolean("Leader"));
     }
     //?}
     //? if >= 1.21.8 {
@@ -199,7 +203,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             at = @At("TAIL")
     )
     private void saveLeaderData(ValueOutput output, CallbackInfo ci) {
-        output.putBoolean("Leader", entityData.get(ZombieData.LEADER));
+        output.putBoolean("Leader", entityData.get(LEADER));
     }
 
     @Inject(
@@ -207,12 +211,12 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             at = @At("TAIL")
     )
     private void readLeaderData(ValueInput input, CallbackInfo ci) {
-        entityData.set(ZombieData.LEADER, input.getBooleanOr("Leader", false));
+        entityData.set(LEADER, input.getBooleanOr("Leader", false));
     }
     *///?}
 
     @Override
     public boolean zi$isLeader() {
-        return entityData.get(ZombieData.LEADER);
+        return entityData.get(LEADER);
     }
 }
