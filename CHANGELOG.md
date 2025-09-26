@@ -1,1 +1,1 @@
-- Fixed issues with some zombie-like mobs from other mods failing to spawn.
+- Fixed zombie horses crashing the game in 1.21.8.

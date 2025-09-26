@@ -10,16 +10,16 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>> {
+public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderState, M extends EntityModel<? super S>> {
 
     @Shadow public abstract M getModel();
 
@@ -37,7 +37,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
             @Local(argsOnly = true) MultiBufferSource bufferSource,
             @Local(argsOnly = true) int packedLight
     ) {
-        if (Main.CONFIG.leaderRedAura.get() && renderState.entityType.is(EntityTypeTags.ZOMBIES) && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
+        if (Main.CONFIG.leaderRedAura.get() && renderState.entityType.is(EntityTypeTags.ZOMBIES) && renderState instanceof HumanoidRenderState && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
             float f = renderState.ageInTicks;
             M entityModel = getModel();
             VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.energySwirl(Main.ZOMBIE_POWER_LAYER, (f * 0.01F) % 1.0F, f * 0.01F % 1.0F));

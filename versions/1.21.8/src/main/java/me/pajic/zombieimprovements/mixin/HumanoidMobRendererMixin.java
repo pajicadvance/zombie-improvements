@@ -4,8 +4,8 @@ import me.pajic.zombieimprovements.util.HumanoidRenderStateExtension;
 import me.pajic.zombieimprovements.util.ZombieExtension;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Zombie;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,8 +19,6 @@ public class HumanoidMobRendererMixin {
             at = @At("HEAD")
     )
     private void extendRenderState(Mob mob, HumanoidRenderState humanoidRenderState, float f, CallbackInfo ci) {
-        if (mob.getType().is(EntityTypeTags.ZOMBIES)) {
-            ((HumanoidRenderStateExtension) humanoidRenderState).zi$setLeader(((ZombieExtension) mob).zi$isLeader());
-        }
+        if (mob instanceof Zombie) ((HumanoidRenderStateExtension) humanoidRenderState).zi$setLeader(((ZombieExtension) mob).zi$isLeader());
     }
 }
