@@ -1,1 +1,1 @@
-- Fixed zombie horses crashing the game in 1.21.8.
+- Prevent crash when other mods spawn an entity of type null (how)

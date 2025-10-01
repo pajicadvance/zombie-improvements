@@ -37,7 +37,7 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
             @Local(argsOnly = true) MultiBufferSource bufferSource,
             @Local(argsOnly = true) int packedLight
     ) {
-        if (Main.CONFIG.leaderRedAura.get() && renderState.entityType.is(EntityTypeTags.ZOMBIES) && renderState instanceof HumanoidRenderState && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
+        if (Main.CONFIG.leaderRedAura.get() && renderState.entityType != null && renderState.entityType.is(EntityTypeTags.ZOMBIES) && renderState instanceof HumanoidRenderState && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
             float f = renderState.ageInTicks;
             M entityModel = getModel();
             VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.energySwirl(Main.ZOMBIE_POWER_LAYER, (f * 0.01F) % 1.0F, f * 0.01F % 1.0F));
