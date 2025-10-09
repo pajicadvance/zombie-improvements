@@ -1,1 +1,1 @@
-- Prevent crash when other mods spawn an entity of type null (how)
+- Updated to Minecraft 1.21.10.

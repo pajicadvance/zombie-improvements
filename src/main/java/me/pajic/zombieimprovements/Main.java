@@ -8,9 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //? if < 1.21.8
-import net.minecraft.world.entity.MobSpawnType;
+/*import net.minecraft.world.entity.MobSpawnType;*/
 //? if >= 1.21.8
-/*import net.minecraft.world.entity.EntitySpawnReason;*/
+import net.minecraft.world.entity.EntitySpawnReason;
 
 public class Main implements ModInitializer {
     public static final String MOD_ID = "zombieimprovements";
@@ -23,8 +23,8 @@ public class Main implements ModInitializer {
     @Override
     public void onInitialize() {}
 
-    public static boolean isFromSpawner(/*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/ spawnType) {
-        return /*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/.isSpawner(spawnType);
+    public static boolean isFromSpawner(/*? if < 1.21.8 {*//*MobSpawnType*//*?} else {*/EntitySpawnReason/*?}*/ spawnType) {
+        return /*? if < 1.21.8 {*//*MobSpawnType*//*?} else {*/EntitySpawnReason/*?}*/.isSpawner(spawnType);
     }
 
     public static ResourceLocation withModNamespace(String path) {

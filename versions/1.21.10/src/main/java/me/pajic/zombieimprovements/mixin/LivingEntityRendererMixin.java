@@ -3,15 +3,15 @@ package me.pajic.zombieimprovements.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import me.pajic.zombieimprovements.Main;
 import me.pajic.zombieimprovements.util.HumanoidRenderStateExtension;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.tags.EntityTypeTags;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
     @Shadow public abstract M getModel();
 
     @ModifyExpressionValue(
-            method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+            method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;shouldRenderLayers(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z"
@@ -34,15 +34,25 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
             boolean original,
             @Local(argsOnly = true) S renderState,
             @Local(argsOnly = true) PoseStack poseStack,
-            @Local(argsOnly = true) MultiBufferSource bufferSource,
-            @Local(argsOnly = true) int packedLight
+            @Local(argsOnly = true) SubmitNodeCollector submitNodeCollector,
+            @Local(argsOnly = true) CameraRenderState cameraRenderState
     ) {
         if (Main.CONFIG.leaderRedAura.get() && renderState.entityType != null && renderState.entityType.is(EntityTypeTags.ZOMBIES) && renderState instanceof HumanoidRenderState && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
-            float f = renderState.ageInTicks;
+            float h = renderState.ageInTicks;
             M entityModel = getModel();
-            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.energySwirl(Main.ZOMBIE_POWER_LAYER, (f * 0.01F) % 1.0F, f * 0.01F % 1.0F));
-            entityModel.setupAnim(renderState);
-            entityModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -8355712);
+            submitNodeCollector.order(1)
+                    .submitModel(
+                            entityModel,
+                            renderState,
+                            poseStack,
+                            RenderType.energySwirl(Main.ZOMBIE_POWER_LAYER, (h * 0.01F) % 1.0F, h * 0.01F % 1.0F),
+                            renderState.lightCoords,
+                            OverlayTexture.NO_OVERLAY,
+                            -8355712,
+                            null,
+                            renderState.outlineColor,
+                            null
+                    );
         }
         return original;
     }

@@ -26,17 +26,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if < 1.21.8 {
-import net.minecraft.world.entity.MobSpawnType;
+/*import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.nbt.CompoundTag;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
-//?}
-//? if >= 1.21.8 {
-/*import net.minecraft.world.entity.EntitySpawnReason;
+*///?} else {
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-*///?}
+//?}
 
 @Mixin(Zombie.class)
 public abstract class ZombieMixin extends Mob implements ZombieExtension {
@@ -44,15 +43,16 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
         super(entityType, level);
     }
 
+    @SuppressWarnings("WrongEntityDataParameterClass")
     @Unique private static final EntityDataAccessor<Boolean> LEADER = SynchedEntityData.defineId(
             Zombie.class, EntityDataSerializers.BOOLEAN
     );
     @Unique private int soundTimer = 0;
     @Unique private Zombie soundSource = null;
-    @Unique private /*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/ spawnType = null;
+    @Unique private /*? if < 1.21.8 {*//*MobSpawnType*//*?} else {*/EntitySpawnReason/*?}*/ spawnType = null;
 
     @Inject(
-            method = /*? if < 1.21.8 {*/"hurt"/*?}*//*? if >= 1.21.8 {*//*"hurtServer"*//*?}*/,
+            method = /*? if < 1.21.8 {*//*"hurt"*//*?} else {*/"hurtServer"/*?}*/,
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntityWithPassengers(Lnet/minecraft/world/entity/Entity;)V"
@@ -60,7 +60,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     )
     private void playSoundOnReinforcementsSpawn(
             //? if >= 1.21.8
-            /*ServerLevel level,*/
+            ServerLevel level,
             DamageSource source,
             float amount,
             CallbackInfoReturnable<Boolean> cir,
@@ -103,7 +103,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
             method = "finalizeSpawn",
             at = @At("HEAD")
     )
-    private void getSpawnReason(ServerLevelAccessor level, DifficultyInstance difficulty, /*? if < 1.21.8 {*/MobSpawnType/*?}*//*? if >= 1.21.8 {*//*EntitySpawnReason*//*?}*/ spawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
+    private void getSpawnReason(ServerLevelAccessor level, DifficultyInstance difficulty, /*? if < 1.21.8 {*//*MobSpawnType*//*?} else {*/EntitySpawnReason/*?}*/ spawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
         this.spawnType = spawnType;
     }
 
@@ -142,10 +142,13 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     }
 
     @ModifyExpressionValue(
-            method = /*? if < 1.21.8 {*/"hurt"/*?}*//*? if >= 1.21.8 {*//*"hurtServer"*//*?}*/,
+            method = /*? if < 1.21.8 {*//*"hurt"*//*?} else {*/"hurtServer"/*?}*/,
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/GameRules;getBoolean(Lnet/minecraft/world/level/GameRules$Key;)Z"
+                    //? if 1.21.1
+                    /*target = "Lnet/minecraft/world/level/GameRules;getBoolean(Lnet/minecraft/world/level/GameRules$Key;)Z"*/
+                    //? if > 1.21.1
+                    target = "Lnet/minecraft/server/level/ServerLevel;isSpawningMonsters()Z"
             )
     )
     private boolean onlyLeaderSpawnsReinforcements(boolean original) {
@@ -153,7 +156,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     }
 
     //? if < 1.21.8 {
-    @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
     @WrapOperation(
             method = "hurt",
             at = @At(
@@ -170,7 +173,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
         }
         else return zombie;
     }
-    //?}
+    *///?}
 
     @Inject(
             method = "defineSynchedData",
@@ -181,7 +184,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     }
 
     //? if < 1.21.8 {
-    @Inject(
+    /*@Inject(
             method = "addAdditionalSaveData",
             at = @At("TAIL")
     )
@@ -196,9 +199,8 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     private void readLeaderData(CompoundTag compound, CallbackInfo ci) {
         entityData.set(LEADER, compound.getBoolean("Leader"));
     }
-    //?}
-    //? if >= 1.21.8 {
-    /*@Inject(
+    *///?} else {
+    @Inject(
             method = "addAdditionalSaveData",
             at = @At("TAIL")
     )
@@ -213,7 +215,7 @@ public abstract class ZombieMixin extends Mob implements ZombieExtension {
     private void readLeaderData(ValueInput input, CallbackInfo ci) {
         entityData.set(LEADER, input.getBooleanOr("Leader", false));
     }
-    *///?}
+    //?}
 
     @Override
     public boolean zi$isLeader() {
