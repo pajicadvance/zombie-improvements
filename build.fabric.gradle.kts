@@ -30,7 +30,6 @@ platform {
 }
 
 loom {
-	accessWidenerPath = rootProject.file("src/main/resources/aw/${stonecutter.current.version}.accesswidener")
 	runs.named("client") {
 		client()
 		ideConfigGenerated(true)
@@ -49,22 +48,32 @@ loom {
 }
 
 stonecutter {
+	filters.exclude("**/*.accesswidener", "**/*.cfg")
 	val dir = eval(current.version, ">1.21.10")
 	replacements.string {
 		direction = dir
-		replace(".ResourceLocation", ".Identifier")
+		replace("ValidatedIdentifier", "ValidatedIdentifier")
 	}
 	replacements.string {
 		direction = dir
-		replace("ResourceLocation.", "Identifier.")
+		replace("ResourceLocation", "Identifier")
 	}
 	replacements.string {
 		direction = dir
-		replace("<ResourceLocation", "<Identifier")
+		replace("net.minecraft.world.entity.monster.Zombie", "net.minecraft.world.entity.monster.zombie.Zombie")
 	}
 	replacements.string {
 		direction = dir
-		replace(" ResourceLocation ", " Identifier ")
+		replace("net.minecraft.client.renderer.RenderType", "net.minecraft.client.renderer.rendertype.RenderType")
+	}
+	replacements.string {
+		direction = dir
+		replace("Lnet/minecraft/world/entity/monster/Zombie;", "Lnet/minecraft/world/entity/monster/zombie/Zombie;")
+	}
+	val dir2 = eval(current.version, ">1.21.1")
+	replacements.string {
+		direction = dir2
+		replace("MobSpawnType", "EntitySpawnReason")
 	}
 }
 

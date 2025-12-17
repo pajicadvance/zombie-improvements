@@ -23,22 +23,32 @@ platform {
 }
 
 stonecutter {
+	filters.exclude("**/*.accesswidener", "**/*.cfg")
 	val dir = eval(current.version, ">1.21.10")
 	replacements.string {
 		direction = dir
-		replace(".ResourceLocation", ".Identifier")
+		replace("ValidatedIdentifier", "ValidatedIdentifier")
 	}
 	replacements.string {
 		direction = dir
-		replace("ResourceLocation.", "Identifier.")
+		replace("ResourceLocation", "Identifier")
 	}
 	replacements.string {
 		direction = dir
-		replace("<ResourceLocation", "<Identifier")
+		replace("net.minecraft.world.entity.monster.Zombie", "net.minecraft.world.entity.monster.zombie.Zombie")
 	}
 	replacements.string {
 		direction = dir
-		replace(" ResourceLocation ", " Identifier ")
+		replace("net.minecraft.client.renderer.RenderType", "net.minecraft.client.renderer.rendertype.RenderType")
+	}
+	replacements.string {
+		direction = dir
+		replace("Lnet/minecraft/world/entity/monster/Zombie;", "Lnet/minecraft/world/entity/monster/zombie/Zombie;")
+	}
+	val dir2 = eval(current.version, ">1.21.1")
+	replacements.string {
+		direction = dir2
+		replace("MobSpawnType", "EntitySpawnReason")
 	}
 }
 
@@ -50,8 +60,6 @@ fletchingTable {
 
 neoForge {
 	version = property("deps.neoforge") as String
-	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
-	validateAccessTransformers = true
 
 	if (hasProperty("deps.parchment")) parchment {
 		val (mc, ver) = (property("deps.parchment") as String).split(':')
@@ -92,7 +100,7 @@ repositories {
 }
 
 dependencies {
-	implementation( "me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
+	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
 }
 
 tasks.named("createMinecraftArtifacts") {

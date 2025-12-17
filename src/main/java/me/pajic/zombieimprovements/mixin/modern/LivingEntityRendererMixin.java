@@ -8,18 +8,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.pajic.zombieimprovements.ZombieImprovements;
 import me.pajic.zombieimprovements.util.HumanoidRenderStateExtension;
+import me.pajic.zombieimprovements.util.ModUtil;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.tags.EntityTypeTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+//? if >= 1.21.11
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+//? if < 1.21.11
+//import net.minecraft.client.renderer.RenderType;
 
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(LivingEntityRenderer.class)
@@ -38,8 +41,7 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
             boolean original,
             @Local(argsOnly = true) S renderState,
             @Local(argsOnly = true) PoseStack poseStack,
-            @Local(argsOnly = true) SubmitNodeCollector submitNodeCollector,
-            @Local(argsOnly = true) CameraRenderState cameraRenderState
+            @Local(argsOnly = true) SubmitNodeCollector submitNodeCollector
     ) {
         if (ZombieImprovements.CONFIG.leaderRedAura.get() && renderState.entityType != null && renderState.entityType.is(EntityTypeTags.ZOMBIES) && renderState instanceof HumanoidRenderState && ((HumanoidRenderStateExtension) renderState).zi$isLeader()) {
             float h = renderState.ageInTicks;
@@ -49,7 +51,7 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
                             entityModel,
                             renderState,
                             poseStack,
-                            RenderType.energySwirl(ZombieImprovements.ZOMBIE_POWER_LAYER, (h * 0.01F) % 1.0F, h * 0.01F % 1.0F),
+							/*? if < 1.21.11 {*//*RenderType*//*?} else {*/RenderTypes/*?}*/.energySwirl(ModUtil.ZOMBIE_POWER_LAYER, (h * 0.01F) % 1.0F, h * 0.01F % 1.0F),
                             renderState.lightCoords,
                             OverlayTexture.NO_OVERLAY,
                             -8355712,
