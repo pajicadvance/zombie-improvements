@@ -21,10 +21,14 @@ There are a few issues with these mechanics:
 
 This mod alleviates all of these issues by:
 - Adding a red aura effect around leader zombies, identical to the charged creeper effect, but red color.
+- Adding unique textures and sounds for leader zombies.
+- Increasing the size of zombies that are leaders.
 - Adding a sound that plays when a zombie spawns in additional reinforcements. The sound that will be played is the block breaking sound of the block the freshly spawned zombie is standing on, played 5 times in a span of 2 seconds.
+- Appending a "Leader" prefix to the name of the leader mob.
 - Fixing two vanilla bugs, namely [MC-219981](https://bugs.mojang.com/browse/MC/issues/MC-219981) and (1.21.1 only) [MC-14800](https://bugs.mojang.com/browse/MC/issues/MC-14800).
 
-There's also a few additional tweaks, disabled by default:
+There's also a few additional tweaks:
+- Configure the attack damage of leader zombies. By default, it's slightly increased compared to normal zombies.
 - Configure the spawn chance for leader zombies.
 - Allow only leader zombies to spawn additional reinforcements.
 - Prevent mob spawners from spawning leaders.
