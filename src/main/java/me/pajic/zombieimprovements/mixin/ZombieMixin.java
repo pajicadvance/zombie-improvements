@@ -1,12 +1,15 @@
 package me.pajic.zombieimprovements.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.zombieimprovements.ZombieImprovements;
 import me.pajic.zombieimprovements.util.AttachmentUtil;
+import me.pajic.zombieimprovements.util.ModSoundEvents;
 import me.pajic.zombieimprovements.util.ModUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -14,6 +17,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -24,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.world.entity.EntitySpawnReason;
+import java.util.Map;
 //? if 1.21.1 {
 /*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -80,16 +85,31 @@ public abstract class ZombieMixin extends Mob {
         }
     }
 
-    @Inject(
+    @SuppressWarnings("DataFlowIssue")
+	@Inject(
             method = "handleAttributes",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/entity/monster/zombie/Zombie;setCanBreakDoors(Z)V"
             )
     )
-    private void markLeader(float difficulty, CallbackInfo ci) {
+    private void onLeaderAttributeAssignment(float difficulty, CallbackInfo ci) {
+		Zombie zombie = (Zombie) (Object) this;
         heal(getMaxHealth());
-		AttachmentUtil.setLeader((Zombie) (Object) this);
+		AttachmentUtil.setLeader(zombie);
+		zombie.getAttribute(Attributes.SCALE).addOrReplacePermanentModifier(new AttributeModifier(
+				ZombieImprovements.id("leader_scale"),
+				ZombieImprovements.CONFIG.leaderSizeIncrease.get(),
+				AttributeModifier.Operation.ADD_VALUE
+		));
+		if (ZombieImprovements.CONFIG.leaderIncreasedDamage.get()) {
+			double r = random.nextDouble();
+			zombie.getAttribute(Attributes.ATTACK_DAMAGE).addOrReplacePermanentModifier(new AttributeModifier(
+					ZombieImprovements.id("leader_attack_damage"),
+					ZombieImprovements.CONFIG.damageIncreaseFormula.evalSafe(Map.of('r', r), r * 1.5 + 3),
+					AttributeModifier.Operation.ADD_VALUE
+			));
+		}
 		ZombieImprovements.debugLog("Leader {} spawned at {} {} {}", getDisplayName().getString(), getX(), getY(), getZ());
     }
 
@@ -167,7 +187,7 @@ public abstract class ZombieMixin extends Mob {
             method = "hurt",
             at = @At(
                     value = "NEW",
-                    target = "(Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/entity/monster/Zombie;"
+                    target = "(Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/entity/monster/zombie/Zombie;"
             )
     )
     private Zombie fixIncorrectReinforcementSpawn(Level level, Operation<Zombie> original, @Cancellable CallbackInfoReturnable<Boolean> cir) {
@@ -180,4 +200,31 @@ public abstract class ZombieMixin extends Mob {
         else return zombie;
     }
     *///?}
+
+	@ModifyReturnValue(
+			method = "getAmbientSound",
+			at = @At("RETURN")
+	)
+	private SoundEvent modifyAmbientSound(SoundEvent original) {
+		return ZombieImprovements.CONFIG.leaderUniqueSounds.get() && AttachmentUtil.isLeader(this) ?
+				ModSoundEvents.AMBIENT : original;
+	}
+
+	@ModifyReturnValue(
+			method = "getHurtSound",
+			at = @At("RETURN")
+	)
+	private SoundEvent modifyHurtSound(SoundEvent original) {
+		return ZombieImprovements.CONFIG.leaderUniqueSounds.get() && AttachmentUtil.isLeader(this) ?
+				ModSoundEvents.HURT : original;
+	}
+
+	@ModifyReturnValue(
+			method = "getDeathSound",
+			at = @At("RETURN")
+	)
+	private SoundEvent modifyDeathSound(SoundEvent original) {
+		return ZombieImprovements.CONFIG.leaderUniqueSounds.get() && AttachmentUtil.isLeader(this) ?
+				ModSoundEvents.DEATH : original;
+	}
 }

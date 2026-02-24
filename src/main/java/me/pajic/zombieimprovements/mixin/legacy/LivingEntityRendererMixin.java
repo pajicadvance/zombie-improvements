@@ -12,11 +12,11 @@ import me.pajic.zombieimprovements.util.AttachmentUtil;
 import me.pajic.zombieimprovements.util.ModUtil;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,7 +52,10 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             float f = zombie.tickCount + partialTick;
             EntityModel<T> entityModel = getModel();
             entityModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
-            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.energySwirl(ModUtil.ZOMBIE_POWER_LAYER, (f * 0.01F) % 1.0F, f * 0.01F % 1.0F));
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.energySwirl(
+					ZombieImprovements.id("textures/entity/zombie/leader_zombie_aura.png"),
+					(f * 0.01F) % 1.0F, f * 0.01F % 1.0F)
+			);
             entityModel.setupAnim(entity, limbSwing, limbSwingAmount, getBob(entity, partialTick), netHeadYaw, headPitch);
             entityModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -8355712);
         }

@@ -22,9 +22,6 @@ public class ZombieImprovements {
 	public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
 	private static final Platform PLATFORM = createPlatformInstance();
 
-	public static void onInitialize() {
-	}
-
 	private static Platform createPlatformInstance() {
 		//? fabric {
 		return new FabricPlatform();

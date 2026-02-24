@@ -1,6 +1,15 @@
 {
+  "entity.zombieimprovements.leader": "Leader %s",
+
   "zombieimprovements.config": "Mod Configuration",
   "zombieimprovements.config.leaderRedAura": "Red aura on leaders",
+  "zombieimprovements.config.leaderUniqueTexture": "Unique texture for leaders",
+  "zombieimprovements.config.leaderUniqueSounds": "Unique sounds for leaders",
+  "zombieimprovements.config.leaderNamePrefix": "Add 'Leader' prefix to name",
+  "zombieimprovements.config.leaderSizeIncrease": "Leader size increase",
+  "zombieimprovements.config.leaderIncreasedDamage": "Increased leader damage",
+  "zombieimprovements.config.damageIncreaseFormula": "Damage formula",
+  "zombieimprovements.config.damageIncreaseFormula.desc": "'r' is a random number between 0 and 1. Normal zombies have 3 attack damage.",
   "zombieimprovements.config.reinforcementSpawnSounds": "Reinforcement sounds",
   "zombieimprovements.config.spawnSoundVolume": "Reinforcement sound volume",
   "zombieimprovements.config.spawnSoundVolume.desc": "Might want to set this to something higher than 1 in 1.21.10 since it's quieter there for some reason.",

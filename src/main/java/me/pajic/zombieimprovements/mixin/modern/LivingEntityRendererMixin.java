@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.pajic.zombieimprovements.ZombieImprovements;
 import me.pajic.zombieimprovements.util.HumanoidRenderStateExtension;
-import me.pajic.zombieimprovements.util.ModUtil;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -22,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 //? if >= 1.21.11
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 //? if < 1.21.11
-//import net.minecraft.client.renderer.RenderType;
+//import net.minecraft.client.renderer.rendertype.RenderType;
 
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(LivingEntityRenderer.class)
@@ -30,7 +29,8 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
 
     @Shadow public abstract M getModel();
 
-    @ModifyExpressionValue(
+    @SuppressWarnings("ConstantValue")
+	@ModifyExpressionValue(
             method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V",
             at = @At(
                     value = "INVOKE",
@@ -51,7 +51,10 @@ public abstract class LivingEntityRendererMixin<S extends LivingEntityRenderStat
                             entityModel,
                             renderState,
                             poseStack,
-							/*? if < 1.21.11 {*//*RenderType*//*?} else {*/RenderTypes/*?}*/.energySwirl(ModUtil.ZOMBIE_POWER_LAYER, (h * 0.01F) % 1.0F, h * 0.01F % 1.0F),
+							/*? if < 1.21.11 {*//*RenderType*//*?} else {*/RenderTypes/*?}*/.energySwirl(
+									ZombieImprovements.id("textures/entity/zombie/leader_zombie_aura.png"),
+									(h * 0.01F) % 1.0F, h * 0.01F % 1.0F
+							),
                             renderState.lightCoords,
                             OverlayTexture.NO_OVERLAY,
                             -8355712,
