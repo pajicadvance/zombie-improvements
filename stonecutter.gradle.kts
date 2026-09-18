@@ -8,7 +8,7 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") apply false
 }
 
-stonecutter active "26.2-fabric"
+stonecutter active "26.3-fabric"
 
 stonecutter parameters {
     val (version, loader) = current.project.split('-', limit = 2)
@@ -38,8 +38,10 @@ stonecutter parameters {
         string(current.parsed >= "1.21.11") {
             replace("ValidatedIdentifier", "ValidatedIdentifier")
             replace("ResourceLocation", "Identifier")
-            replace("location()", "identifier()")
             replace("net.ramixin.mixson_backport", "net.ramixin.mixson")
+            replace("net.minecraft.world.entity.monster.Zombie", "net.minecraft.world.entity.monster.zombie.Zombie")
+            replace("Lnet/minecraft/world/entity/monster/Zombie;", "Lnet/minecraft/world/entity/monster/zombie/Zombie;")
+            replace("MobSpawnType", "EntitySpawnReason")
         }
     }
 }
