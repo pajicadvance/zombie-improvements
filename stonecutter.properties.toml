@@ -2,7 +2,7 @@
 mod.id = "zombieimprovements"
 mod.name = "Zombie Improvements"
 mod.group = "me.pajic"
-mod.version = "1.2.2"
+mod.version = "1.2.3"
 mod.description = "Improves zombie leader and reinforcement mechanics and fixes a few bugs"
 mod.authors = "pajic"
 mod.contributors = "ThePotatoArchivist"
@@ -89,15 +89,15 @@ required.fzzy_config = "0.7.6+26.2+neoforge"
 
 ["26.3"]
 mod.mc_releases = ["26.3"]
-#loader.neo = "26.2.0.36-beta"
+loader.neo = "26.3.0.95"
 runtime.sodium = "0.9.2+mc26.3"
 
 [fabric."26.3"]
 mod.mc_compat = "~26.3"
 required.fabric-api = "0.160.5+26.3"
-required.fzzy_config = "0.7.7+26.3"
+required.fzzy_config = "0.7.7+fix3+26.3"
 runtime.modmenu = "21.0.0-beta.1"
 
-#[neoforge."26.2"]
-#mod.mc_compat = "[26.3, 26.4)"
-#required.fzzy_config = "0.7.6+26.2+neoforge"
+[neoforge."26.3"]
+mod.mc_compat = "[26.3, 26.4)"
+required.fzzy_config = "0.7.7+fix3+26.3+neoforge"

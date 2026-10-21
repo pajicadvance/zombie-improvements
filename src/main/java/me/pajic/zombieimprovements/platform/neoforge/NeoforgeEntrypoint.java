@@ -24,7 +24,6 @@ public class NeoforgeEntrypoint {
 
 	@SubscribeEvent
 	private static void register(RegisterEvent event) {
-		ModSoundEvents.init();
 		event.register(
 				NeoForgeRegistries.ATTACHMENT_TYPES.key(),
 				registry -> registry.register(
@@ -33,11 +32,7 @@ public class NeoforgeEntrypoint {
 		);
 		event.register(
 				Registries.SOUND_EVENT,
-				registry -> {
-					registry.register(ModSoundEvents.AMBIENT_ID, ModSoundEvents.AMBIENT);
-					registry.register(ModSoundEvents.HURT_ID, ModSoundEvents.HURT);
-					registry.register(ModSoundEvents.DEATH_ID, ModSoundEvents.DEATH);
-				}
+				registry -> ModSoundEvents.register(registry::register)
 		);
 	}
 }

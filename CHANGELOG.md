@@ -1,2 +1,6 @@
-- Added Fabric 26.3 version.
-- Added NeoForge 26.2 version.
+- Leader husks, drowned, zombie villagers and zombified piglins now have unique sounds.
+- Added a leader texture for baby zombies, fixing holes in the texture of baby leader zombies.
+- Added leader textures for husks, drowned, zombie villagers and zombified piglins.
+- The leader aura is now drawn slightly larger than the mob, making it visible on zombified piglins.
+- Fixed leader zombie villagers having a farmer hat in their aura.
+- Added NeoForge 26.3 version.

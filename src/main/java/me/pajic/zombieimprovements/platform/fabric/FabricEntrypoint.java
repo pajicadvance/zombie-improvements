@@ -15,10 +15,7 @@ public class FabricEntrypoint implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ZombieImprovements.onInitialize();
-        ModSoundEvents.init();
-        Registry.register(BuiltInRegistries.SOUND_EVENT, ModSoundEvents.AMBIENT_ID, ModSoundEvents.AMBIENT);
-        Registry.register(BuiltInRegistries.SOUND_EVENT, ModSoundEvents.HURT_ID, ModSoundEvents.HURT);
-        Registry.register(BuiltInRegistries.SOUND_EVENT, ModSoundEvents.DEATH_ID, ModSoundEvents.DEATH);
+        ModSoundEvents.register((id, sound) -> Registry.register(BuiltInRegistries.SOUND_EVENT, id, sound));
 	}
 }
 //?}

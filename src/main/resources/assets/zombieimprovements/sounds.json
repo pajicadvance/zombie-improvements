@@ -20,5 +20,128 @@
       "zombieimprovements:death"
     ],
     "subtitle": "subtitles.entity.zombie.death"
+  },
+  "entity.husk.leader.ambient": {
+    "sounds": [
+      {"name": "mob/husk/idle1", "pitch": 0.6},
+      {"name": "mob/husk/idle2", "pitch": 0.6},
+      {"name": "mob/husk/idle3", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.husk.ambient"
+  },
+  "entity.husk.leader.hurt": {
+    "sounds": [
+      {"name": "mob/husk/hurt1", "pitch": 0.6},
+      {"name": "mob/husk/hurt2", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.husk.hurt"
+  },
+  "entity.husk.leader.death": {
+    "sounds": [
+      {"name": "mob/husk/death1", "pitch": 0.6},
+      {"name": "mob/husk/death2", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.husk.death"
+  },
+  "entity.drowned.leader.ambient": {
+    "sounds": [
+      {"name": "mob/drowned/idle1", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/idle2", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/idle3", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/idle4", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/idle5", "volume": 0.9, "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.drowned.ambient"
+  },
+  "entity.drowned.leader.ambient_water": {
+    "sounds": [
+      {"name": "mob/drowned/water/idle1", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/water/idle2", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/water/idle3", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/water/idle4", "volume": 0.9, "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.drowned.ambient_water"
+  },
+  "entity.drowned.leader.hurt": {
+    "sounds": [
+      {"name": "mob/drowned/hurt1", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/hurt2", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/hurt3", "volume": 0.9, "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.drowned.hurt"
+  },
+  "entity.drowned.leader.hurt_water": {
+    "sounds": [
+      {"name": "mob/drowned/water/hurt1", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/water/hurt2", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/water/hurt3", "volume": 0.9, "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.drowned.hurt"
+  },
+  "entity.drowned.leader.death": {
+    "sounds": [
+      {"name": "mob/drowned/death1", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/death2", "volume": 0.9, "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.drowned.death"
+  },
+  "entity.drowned.leader.death_water": {
+    "sounds": [
+      {"name": "mob/drowned/water/death1", "volume": 0.9, "pitch": 0.6},
+      {"name": "mob/drowned/water/death2", "volume": 0.9, "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.drowned.death"
+  },
+  "entity.zombie_villager.leader.ambient": {
+    "sounds": [
+      {"name": "mob/zombie_villager/say1", "pitch": 0.6},
+      {"name": "mob/zombie_villager/say2", "pitch": 0.6},
+      {"name": "mob/zombie_villager/say3", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombie_villager.ambient"
+  },
+  "entity.zombie_villager.leader.hurt": {
+    "sounds": [
+      {"name": "mob/zombie_villager/hurt1", "pitch": 0.6},
+      {"name": "mob/zombie_villager/hurt2", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombie_villager.hurt"
+  },
+  "entity.zombie_villager.leader.death": {
+    "sounds": [
+      {"name": "mob/zombie_villager/death", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombie_villager.death"
+  },
+  "entity.zombified_piglin.leader.ambient": {
+    "sounds": [
+      {"name": "mob/zombified_piglin/zpig1", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpig2", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpig3", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpig4", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.ambient"
+  },
+  "entity.zombified_piglin.leader.angry": {
+    "sounds": [
+      {"name": "mob/zombified_piglin/zpigangry1", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpigangry2", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpigangry3", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpigangry4", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.angry"
+  },
+  "entity.zombified_piglin.leader.hurt": {
+    "sounds": [
+      {"name": "mob/zombified_piglin/zpighurt1", "pitch": 0.6},
+      {"name": "mob/zombified_piglin/zpighurt2", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.hurt"
+  },
+  "entity.zombified_piglin.leader.death": {
+    "sounds": [
+      {"name": "mob/zombified_piglin/zpigdeath", "pitch": 0.6}
+    ],
+    "subtitle": "subtitles.entity.zombified_piglin.death"
   }
 }

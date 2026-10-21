@@ -1,14 +1,11 @@
 package me.pajic.zombieimprovements.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.zombieimprovements.ZombieImprovements;
 import me.pajic.zombieimprovements.util.AttachmentUtil;
-import me.pajic.zombieimprovements.util.ModSoundEvents;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -37,9 +34,9 @@ public abstract class ZombieMixin extends Mob {
         super(entityType, level);
     }
 
-    @Unique private int soundTimer = 0;
-    @Unique private Zombie soundSource = null;
-    @Unique private EntitySpawnReason spawnType = null;
+    @Unique private int zi$soundTimer = 0;
+    @Unique private Zombie zi$soundSource = null;
+    @Unique private EntitySpawnReason zi$spawnType = null;
 
     @Inject(
             //~ if <26.1 'hurtServer' -> 'hurt'
@@ -57,8 +54,8 @@ public abstract class ZombieMixin extends Mob {
             @Local Zombie reinforcement
     ) {
         if (ZombieImprovements.CONFIG.reinforcementSpawnSounds.get()) {
-            soundTimer = 40;
-            soundSource = reinforcement;
+            zi$soundTimer = 40;
+            zi$soundSource = reinforcement;
         }
     }
 
@@ -69,12 +66,12 @@ public abstract class ZombieMixin extends Mob {
             at = @At(value = "TAIL")
     )
     private void tickReinforcementSound(CallbackInfo ci) {
-        if (level() instanceof ServerLevel && isAlive() && !isNoAi() && soundTimer > 0 && soundSource != null) {
-            if (soundTimer % 8 == 0) playSound(
-					soundSource.getBlockStateOn().getSoundType().getBreakSound(),
+        if (level() instanceof ServerLevel && isAlive() && !isNoAi() && zi$soundTimer > 0 && zi$soundSource != null) {
+            if (zi$soundTimer % 8 == 0) playSound(
+					zi$soundSource.getBlockStateOn().getSoundType().getBreakSound(),
 					ZombieImprovements.CONFIG.spawnSoundVolume.get(), 1
 			);
-            soundTimer--;
+            zi$soundTimer--;
         }
     }
 
@@ -111,7 +108,7 @@ public abstract class ZombieMixin extends Mob {
             at = @At("HEAD")
     )
     private void getSpawnReason(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, SpawnGroupData groupData, CallbackInfoReturnable<SpawnGroupData> cir) {
-        this.spawnType = spawnReason;
+        this.zi$spawnType = spawnReason;
     }
 
     @ModifyExpressionValue(
@@ -122,7 +119,7 @@ public abstract class ZombieMixin extends Mob {
             )
     )
     private float noLeaderIfFromSpawner(float original) {
-        return ZombieImprovements.CONFIG.noLeaderFromSpawners.get() && EntitySpawnReason.isSpawner(spawnType) ? 1 : original;
+        return ZombieImprovements.CONFIG.noLeaderFromSpawners.get() && EntitySpawnReason.isSpawner(zi$spawnType) ? 1 : original;
     }
 
     @WrapWithCondition(
@@ -134,7 +131,7 @@ public abstract class ZombieMixin extends Mob {
             )
     )
     private boolean noReinforcementsIfFromSpawner(AttributeInstance instance, AttributeModifier modifier) {
-        return !EntitySpawnReason.isSpawner(spawnType) || !ZombieImprovements.CONFIG.noReinforcementsFromSpawners.get();
+        return !EntitySpawnReason.isSpawner(zi$spawnType) || !ZombieImprovements.CONFIG.noReinforcementsFromSpawners.get();
     }
 
     @WrapWithCondition(
@@ -145,7 +142,7 @@ public abstract class ZombieMixin extends Mob {
             )
     )
     private boolean noReinforcementsIfFromSpawner(Zombie instance) {
-        return !EntitySpawnReason.isSpawner(spawnType) || !ZombieImprovements.CONFIG.noReinforcementsFromSpawners.get();
+        return !EntitySpawnReason.isSpawner(zi$spawnType) || !ZombieImprovements.CONFIG.noReinforcementsFromSpawners.get();
     }
 
 	@ModifyExpressionValue(
@@ -172,31 +169,4 @@ public abstract class ZombieMixin extends Mob {
         return ZombieImprovements.CONFIG.onlyLeaderSpawnsReinforcements.get() ?
 				AttachmentUtil.isLeader((Zombie) (Object) this) : original;
     }
-
-	@ModifyReturnValue(
-			method = "getAmbientSound",
-			at = @At("RETURN")
-	)
-	private SoundEvent modifyAmbientSound(SoundEvent original) {
-		return ZombieImprovements.CONFIG.leaderUniqueSounds.get() && AttachmentUtil.isLeader(this) ?
-				ModSoundEvents.AMBIENT : original;
-	}
-
-	@ModifyReturnValue(
-			method = "getHurtSound",
-			at = @At("RETURN")
-	)
-	private SoundEvent modifyHurtSound(SoundEvent original) {
-		return ZombieImprovements.CONFIG.leaderUniqueSounds.get() && AttachmentUtil.isLeader(this) ?
-				ModSoundEvents.HURT : original;
-	}
-
-	@ModifyReturnValue(
-			method = "getDeathSound",
-			at = @At("RETURN")
-	)
-	private SoundEvent modifyDeathSound(SoundEvent original) {
-		return ZombieImprovements.CONFIG.leaderUniqueSounds.get() && AttachmentUtil.isLeader(this) ?
-				ModSoundEvents.DEATH : original;
-	}
 }

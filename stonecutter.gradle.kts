@@ -41,6 +41,9 @@ stonecutter parameters {
             replace("net.ramixin.mixson_backport", "net.ramixin.mixson")
             replace("net.minecraft.world.entity.monster.Zombie", "net.minecraft.world.entity.monster.zombie.Zombie")
             replace("Lnet/minecraft/world/entity/monster/Zombie;", "Lnet/minecraft/world/entity/monster/zombie/Zombie;")
+            replace("net.minecraft.world.entity.monster.Husk", "net.minecraft.world.entity.monster.zombie.Husk")
+            replace("net.minecraft.world.entity.monster.Drowned", "net.minecraft.world.entity.monster.zombie.Drowned")
+            replace("net.minecraft.world.entity.monster.ZombifiedPiglin", "net.minecraft.world.entity.monster.zombie.ZombifiedPiglin")
             replace("MobSpawnType", "EntitySpawnReason")
         }
     }
